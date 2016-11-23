@@ -102,7 +102,14 @@ limitations under the License.
           <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
             <h2 class="mdl-card__title-text">臉書傷心程式 Unfriend Finder</h2>
           </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-600" id="login-hint"
+          <div class="mdl-card__supporting-text">
+            Facebook 更新了使用者隱私權政策，使應用程式無法直接取得朋友列表，<br>
+            每次進入本程式時，我們會用估算方式記錄並比對可能已刪除的朋友，<br>
+            結果可能因朋友改名或變更設定而有不準確，程式結果需要您進一步驗證。<br>
+            This App only gives you a certain level of accuracy. <br>
+          </div>
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600" 
+            id="login-hint"
             style="height:50px">
             <p>點登入鈕登入 Login to Start</p>
 
@@ -118,12 +125,6 @@ limitations under the License.
           </div>
           <div id="ad1"></div>
           <div id="main" style="display:none">
-            <div class="mdl-card__supporting-text">
-              Facebook 更新了使用者隱私權政策，使應用程式無法直接取得朋友列表，<br>
-              每次進入本程式時，我們會用估算方式記錄並比對可能已刪除的朋友，<br>
-              結果可能因朋友改名或變更設定而有不準確，程式結果需要您進一步驗證。<br>
-              This App only gives you a certain level of accuracy. <br>
-            </div>
             <div id="unfriend-result" style="margin: 15px">
               <!-- MDL Progress Bar with Indeterminate Progress -->
               <div class="spinner">
@@ -432,9 +433,22 @@ limitations under the License.
                    'data-ad-slot="2251378650"></ins>';
         document.getElementById('ad1').innerHTML = ad1;
         document.getElementById('ad2').innerHTML = ad1;
-        // (adsbygoogle = window.adsbygoogle || []).push({});
-        [].forEach.call(document.querySelectorAll('.adsbygoogle'), function(){
-          (adsbygoogle = window.adsbygoogle || []).push({});
+        var loadAds = false;
+        document.addEventListener('readystatechange', function() {
+          if (document.readyState === "complete" && loadAds === false) {
+            loadAds = true;
+            [].forEach.call(document.querySelectorAll('.adsbygoogle'), function(){
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+          }
+        });
+        window.addEventListener('load', function() {
+          if(loadAds === false){
+            loadAds = true;
+            [].forEach.call(document.querySelectorAll('.adsbygoogle'), function(){
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+          }
         });
       }
     }
