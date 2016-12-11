@@ -31,6 +31,9 @@ limitations under the License.
     }
   </style>
   <style>
+    .spacer {
+      height: 20px;
+    }
     .spinner {
       margin: 40px auto;
       width: 40px;
@@ -103,15 +106,15 @@ limitations under the License.
             <h2 class="mdl-card__title-text">臉書傷心程式 Unfriend Finder</h2>
           </div>
           <div class="mdl-card__supporting-text">
-            Facebook 更新了使用者隱私權政策，使應用程式無法直接取得朋友列表，<br>
+            <!-- Facebook 更新了使用者隱私權政策，使應用程式無法直接取得朋友列表，<br> -->
             每次進入本程式時，我們會用估算方式記錄並比對可能已刪除的朋友，<br>
             結果可能因朋友改名或變更設定而有不準確，程式結果需要您進一步驗證。<br>
-            This App only gives you a certain level of accuracy. <br>
+            This App only gives you a good level of accuracy. <br>
           </div>
           <div class="mdl-card__supporting-text mdl-color-text--grey-600" 
             id="login-hint"
-            style="height:50px">
-            <p>點登入鈕登入 Login to Start</p>
+            style="height:70px">
+            <p>點登入鈕開始 Login to Start</p>
 
             <fb:login-button data-auto-logout-link="false" 
               scope="public_profile,email" size="large"></fb:login-button>
@@ -178,16 +181,17 @@ limitations under the License.
     }
     function checkLoginState(event) {
       console.log('checkLoginState');
+      console.log(APIS.firebaseUserAuthorized);
+      if(APIS.firebaseUserAuthorized){
+        APIS.removeLoginButton();
+      }
       if(isInIframe()){
         document.getElementById('go-to-new-page').style='';
         return
       }
       if (event.authResponse) {
         // User is signed-in Facebook.
-        APIS.firebaseUserAuthorized = true;
-        if(APIS.facebookUserAuthorized){
-          removeLoginButton();
-        }
+        APIS.facebookUserAuthorized = true;
         var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
           unsubscribe();
           // Check if we are already signed-in Firebase with the correct user.
@@ -386,10 +390,12 @@ limitations under the License.
         );
         document.getElementById('unfriend-result').innerHTML = t(obj);
         return this;
+      },
+      removeLoginButton: function() {
+        console.log('removeLoginButton');
+        document.getElementById('login-hint').innerHTML = '';
       }
     };
-
-
 
     /**
      * initApp handles setting up UI event listeners and registering Firebase auth listeners:
@@ -412,8 +418,9 @@ limitations under the License.
           var providerData = user.providerData;
           // [START_EXCLUDE]
           APIS.firebaseUserAuthorized = true;
+          console.log(APIS.facebookUserAuthorized);
           if(APIS.facebookUserAuthorized){
-            removeLoginButton();
+            APIS.removeLoginButton();
           }
           // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
           // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
@@ -428,10 +435,6 @@ limitations under the License.
       });
       // [END authstatelistener]
       
-      function removeLoginButton() {
-        document.getElementById('login-hint').innerHTML = '';
-      }
-
       //display ads
       if(!isInIframe()){
         document.getElementById('main').style='';
