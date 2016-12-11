@@ -184,6 +184,10 @@ limitations under the License.
       }
       if (event.authResponse) {
         // User is signed-in Facebook.
+        APIS.firebaseUserAuthorized = true;
+        if(APIS.facebookUserAuthorized){
+          removeLoginButton();
+        }
         var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
           unsubscribe();
           // Check if we are already signed-in Firebase with the correct user.
@@ -296,6 +300,8 @@ limitations under the License.
     // [END checksameuser]
     
     var APIS = {
+      facebookUserAuthorized: false,
+      firebaseUserAuthorized: false,
       firebaseUser: undefined,
       meRef: undefined,
       init: function(option) {
@@ -391,6 +397,7 @@ limitations under the License.
      *    out, and that is where we update the UI.
      */
     function initApp() {
+      console.log('initApp');
       // Listening for auth state changes.
       // [START authstatelistener]
       firebase.auth().onAuthStateChanged(function(user) {
@@ -404,7 +411,10 @@ limitations under the License.
           var uid = user.uid;
           var providerData = user.providerData;
           // [START_EXCLUDE]
-          document.getElementById('login-hint').innerHTML = '';
+          APIS.firebaseUserAuthorized = true;
+          if(APIS.facebookUserAuthorized){
+            removeLoginButton();
+          }
           // document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
           // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
           // [END_EXCLUDE]
@@ -418,6 +428,10 @@ limitations under the License.
       });
       // [END authstatelistener]
       
+      function removeLoginButton() {
+        document.getElementById('login-hint').innerHTML = '';
+      }
+
       //display ads
       if(!isInIframe()){
         document.getElementById('main').style='';
