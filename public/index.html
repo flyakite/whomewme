@@ -117,7 +117,7 @@ limitations under the License.
             <p>點登入鈕開始 Login to Start</p>
 
             <fb:login-button data-auto-logout-link="false" 
-              scope="public_profile,email" size="large"></fb:login-button>
+              scope="public_profile,email,user_friends" size="large"></fb:login-button>
           </div>
           <div  id="go-to-new-page" style="display:none" 
             class="mdl-card__actions mdl-card--border">
@@ -392,8 +392,8 @@ limitations under the License.
         return this;
       },
       removeLoginButton: function() {
-        console.log('removeLoginButton');
-        document.getElementById('login-hint').innerHTML = '';
+        console.log('dry removeLoginButton');
+        //document.getElementById('login-hint').innerHTML = '';
       }
     };
 
